@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bood | Nature's Purest Ritual - Wildcrafted Sea Moss & Adaptogens</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Discover Bood's wildcrafted sea moss and adaptogenic mushrooms. Pure, organic wellness from the ocean to nourish your body naturally.">
+    <meta name="keywords" content="sea moss, wildcrafted, organic, adaptogens, lion's mane, wellness, natural health, bood">
+    <meta name="author" content="Bood">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://bood.com/">
+    <meta property="og:title" content="Bood | Nature's Purest Ritual">
+    <meta property="og:description" content="Wildcrafted sea moss and adaptogenic mushrooms for modern wellness. Pure, organic, and sustainably sourced.">
+    <meta property="og:image" content="https://bood.com/boodd.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://bood.com/">
+    <meta property="twitter:title" content="Bood | Nature's Purest Ritual">
+    <meta property="twitter:description" content="Wildcrafted sea moss and adaptogenic mushrooms for modern wellness.">
+    <meta property="twitter:image" content="https://bood.com/boodd.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/boodd.png">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#1a2e2a">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'moss': '#1a2e2a',
+                        'sand': '#e8e6e1',
+                        'clay': '#bfafa6',
+                        'gold': '#d4af37',
+                        'ocean': '#2b4c4a'
+                    },
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Manrope', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'noise': "url('https://grainy-gradients.vercel.app/noise.svg')",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base & Reset */
+        body {
+            background-color: #e8e6e1;
+            color: #1a2e2a;
+            overflow-x: hidden;
+        }
+
+        /* Smooth Scroll Setup */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+
+        /* Typography Utilities */
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(26, 46, 42, 0.3);
+            color: transparent;
+        }
+
+        /* Image Reveal Mask */
+        .reveal-mask {
+            clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+            transition: clip-path 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        .reveal-mask.in-view {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+        }
+
+        /* Custom Loader */
+        .curtain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #1a2e2a;
+            z-index: 9999;
+            transform-origin: top;
+        }
+
+        /* Mobile Horizontal Scroll */
+        @media (max-width: 767px) {
+            #collection {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            #scroll-container {
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+            }
+            #scroll-container > div {
+                scroll-snap-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Curtain Loader -->
+    <div class="curtain flex items-center justify-center text-sand">
+        <div class="overflow-hidden">
+            <h1 class="loader-text text-6xl md:text-9xl font-serif italic translate-y-full">bood.</h1>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full p-4 md:p-8 flex justify-between items-center z-50 mix-blend-difference text-[#e8e6e1]">
+        <a href="index.html" class="text-xl md:text-2xl font-serif font-bold italic">bood.</a>
+
+        <div class="hidden md:flex space-x-12 font-sans text-xs uppercase tracking-[0.2em]">
+            <a href="index.html" class="hover:text-gold transition-colors">Our Roots</a>
+            <a href="collection.html" class="hover:text-gold transition-colors">Collection</a>
+            <a href="guide.html" class="hover:text-gold transition-colors">Guide</a>
+            <a href="learn.html" class="hover:text-gold transition-colors">Learn</a>
+            <a href="lions-mane.html" class="hover:text-gold transition-colors">Lion's Mane</a>
+            <a href="contact.html" class="hover:text-gold transition-colors">Contact</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button class="hidden md:block font-sans text-[10px] md:text-xs uppercase tracking-widest border border-white/30 px-4 md:px-6 py-2 rounded-full hover:bg-white hover:text-moss transition-all">
+                Shop (0)
+            </button>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-1.5 w-8 h-8 justify-center items-center">
+                <span class="w-6 h-[2px] bg-white transition-all duration-300"></span>
+                <span class="w-6 h-[2px] bg-white transition-all duration-300"></span>
+                <span class="w-6 h-[2px] bg-white transition-all duration-300"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-moss z-40 transform translate-x-full transition-transform duration-300 md:hidden">
+        <div class="flex flex-col items-center justify-center h-full space-y-8">
+            <a href="index.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Our Roots</a>
+            <a href="collection.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Collection</a>
+            <a href="guide.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Guide</a>
+            <a href="learn.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Learn</a>
+            <a href="lions-mane.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Lion's Mane</a>
+            <a href="contact.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Contact</a>
+            <button class="font-sans text-xs uppercase tracking-widest border border-sand/30 px-6 py-3 rounded-full hover:bg-sand hover:text-moss text-sand transition-all mt-8">
+                Shop (0)
+            </button>
+        </div>
+    </div>
+
+    <main>
+
+        <!-- HERO SECTION -->
+        <section class="relative h-screen md:h-[120vh] w-full overflow-hidden flex flex-col items-center justify-center" data-bgcolor="#e8e6e1">
+
+            <!-- Video Background with Parallax -->
+            <div class="absolute inset-0 z-0 h-[120%] w-full top-0 hero-bg">
+                <div class="absolute inset-0 bg-moss/20 z-10"></div>
+                <video autoplay loop muted playsinline class="w-full h-full object-cover">
+                    <source src="https://videos.pexels.com/video-files/5091624/5091624-uhd_2560_1440_24fps.mp4" type="video/mp4">
+                </video>
+            </div>
+
+            <!-- Hero Content -->
+            <div class="relative z-20 text-center mix-blend-overlay text-white px-4">
+                <p class="hero-sub text-xs md:text-base font-sans uppercase tracking-[0.3em] md:tracking-[0.4em] mb-4 opacity-0">St. Lucia to London</p>
+                <h1 class="hero-title text-[20vw] md:text-[18vw] leading-[0.8] font-serif font-medium opacity-0">bood.</h1>
+                <p class="hero-sub text-base md:text-xl font-serif italic mt-6 md:mt-8 opacity-0">Wildcrafted sea moss for the modern soul.</p>
+            </div>
+
+            <!-- Scroll Indicator -->
+            <div class="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 opacity-60">
+                <span class="text-[10px] uppercase tracking-widest text-white">Explore</span>
+                <div class="w-[1px] h-12 md:h-16 bg-white/50"></div>
+            </div>
+        </section>
+
+
+        <!-- MANIFESTO SECTION -->
+        <section id="about" class="relative py-16 md:py-32 px-6 md:px-20 bg-sand text-moss" data-bgcolor="#e8e6e1">
+            <div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-10 md:gap-20">
+                <div class="md:w-1/3 pt-4">
+                    <span class="block w-full h-[1px] bg-moss/20 mb-6"></span>
+                    <p class="font-sans text-xs uppercase tracking-widest text-moss/60">01 — The Origin</p>
+                </div>
+                <div class="md:w-2/3">
+                    <h2 class="text-3xl md:text-7xl font-serif leading-[1.1] reveal-type">
+                        We don't manufacture health. <br class="hidden md:block"> <span class="italic text-ocean">We harvest it.</span>
+                    </h2>
+                    <p class="mt-8 md:mt-12 text-base md:text-xl font-sans font-light leading-relaxed max-w-2xl text-moss/80 reveal-fade">
+                        Born from the volcanic waters of St. Lucia, our sea moss is sun-dried, wildcrafted, and untouched by chemicals. It is nature's most potent multivitamin, delivered straight to your door in London.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- VISUAL STORYTELLING (Parallax Grid) -->
+        <section class="py-10 md:py-20 px-4 md:px-10 bg-sand overflow-hidden">
+            <div class="grid grid-cols-12 gap-4 md:h-[150vh] relative">
+
+                <!-- Image 1 -->
+                <div class="col-span-12 md:col-span-6 h-[50vh] md:h-[60vh] relative mt-10 md:mt-20 parallax-img">
+                    <div class="reveal-mask w-full h-full absolute inset-0 bg-gray-200">
+                         <img src="https://images.pexels.com/photos/10528236/pexels-photo-10528236.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-full h-full object-cover" alt="Sea Moss Texture">
+                    </div>
+                    <p class="absolute -bottom-8 left-0 text-xs uppercase tracking-widest">01. Raw Texture</p>
+                </div>
+
+                <!-- Text Block -->
+                <div class="col-span-12 md:col-span-4 md:col-start-8 flex items-center justify-center z-10 mt-10 md:mt-0">
+                    <div class="text-center md:text-left bg-white p-8 md:p-12 shadow-xl ml-0 md:-ml-40 md:mt-20 relative w-full md:w-auto">
+                        <h3 class="text-2xl md:text-3xl font-serif italic mb-4">92 Minerals</h3>
+                        <p class="text-sm font-sans leading-relaxed text-gray-600">
+                            The human body consists of 102 minerals. Sea moss contains 92 of them. It is the single most nutrient-dense plant found in the ocean.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Image 2 -->
+                <div class="col-span-12 md:col-span-5 md:col-start-2 h-[60vh] md:h-[70vh] relative self-end mt-10 mb-10 md:mb-20 parallax-img" data-speed="0.1">
+                     <div class="reveal-mask w-full h-full absolute inset-0 bg-gray-200">
+                        <img src="https://images.pexels.com/photos/5424683/pexels-photo-5424683.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="Ocean">
+                     </div>
+                     <p class="absolute -top-8 right-0 text-xs uppercase tracking-widest">02. The Source</p>
+                </div>
+
+                <!-- Image 3 -->
+                <div class="col-span-12 md:col-span-4 md:col-start-8 h-[50vh] relative mt-10 md:mt-40 parallax-img" data-speed="0.2">
+                     <div class="reveal-mask w-full h-full absolute inset-0 bg-gray-200">
+                        <img src="https://images.pexels.com/photos/4099354/pexels-photo-4099354.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="w-full h-full object-cover" alt="Preparation">
+                     </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- HORIZONTAL SCROLL COLLECTION -->
+        <section id="collection" class="bg-moss text-sand py-16 md:py-32 overflow-hidden" data-bgcolor="#1a2e2a">
+            <div class="px-6 md:px-20 mb-10 md:mb-20">
+                <h2 class="text-4xl md:text-8xl font-serif">The Collection.</h2>
+                <p class="text-clay mt-4 font-sans uppercase tracking-widest text-xs md:text-sm">Small Batch. Hand Harvested.</p>
+            </div>
+
+            <!-- Pinning Container -->
+            <!-- Changed w-[400vw] to w-max to fix excessive scrolling length -->
+            <div id="scroll-container" class="flex flex-nowrap pl-6 md:pl-20 w-max h-[70vh] items-center gap-10 md:gap-20">
+
+                <!-- Product 1 -->
+                <div class="w-[85vw] md:w-[30vw] h-full flex flex-col group cursor-pointer relative">
+                    <div class="w-full h-[80%] bg-[#233b36] relative overflow-hidden">
+                        <img src="https://images.pexels.com/photos/8844383/pexels-photo-8844383.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out" alt="Gold Gel">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <div class="mt-6 flex justify-between items-end border-b border-white/10 pb-4">
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-serif italic">St. Lucian Gold</h3>
+                            <p class="text-xs md:text-sm text-clay mt-1">The Original. Pure & Potent.</p>
+                        </div>
+                        <span class="text-lg md:text-xl font-sans whitespace-nowrap">£15.00</span>
+                    </div>
+                </div>
+
+                <!-- Product 2 -->
+                <div class="w-[85vw] md:w-[30vw] h-full flex flex-col group cursor-pointer relative">
+                    <div class="w-full h-[80%] bg-[#233b36] relative overflow-hidden">
+                        <img src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out" alt="Purple Gel">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <div class="mt-6 flex justify-between items-end border-b border-white/10 pb-4">
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-serif italic">Royal Purple</h3>
+                            <p class="text-xs md:text-sm text-clay mt-1">Higher Antioxidant Content.</p>
+                        </div>
+                        <span class="text-lg md:text-xl font-sans whitespace-nowrap">£18.00</span>
+                    </div>
+                </div>
+
+                <!-- Product 3 -->
+                <div class="w-[85vw] md:w-[30vw] h-full flex flex-col group cursor-pointer relative">
+                    <div class="w-full h-[80%] bg-[#233b36] relative overflow-hidden">
+                        <img src="https://images.pexels.com/photos/6621435/pexels-photo-6621435.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700 ease-out" alt="Turmeric">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <div class="mt-6 flex justify-between items-end border-b border-white/10 pb-4">
+                        <div>
+                            <h3 class="text-2xl md:text-3xl font-serif italic">Turmeric & Ginger</h3>
+                            <p class="text-xs md:text-sm text-clay mt-1">Anti-inflammatory Powerhouse.</p>
+                        </div>
+                        <span class="text-lg md:text-xl font-sans whitespace-nowrap">£16.50</span>
+                    </div>
+                </div>
+
+                <!-- Product 4 -->
+                <div class="w-[85vw] md:w-[30vw] h-full flex items-center justify-center border border-white/10 text-center p-10 hover:bg-white/5 transition-colors">
+                     <div>
+                         <h3 class="text-3xl md:text-4xl font-serif italic mb-4">View All</h3>
+                         <div class="w-12 h-[1px] bg-white mx-auto"></div>
+                     </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="bg-moss text-sand pt-20 md:pt-40 pb-10 px-6 md:px-20 relative overflow-hidden" data-bgcolor="#1a2e2a">
+            <!-- Large Typographic Footer -->
+            <div class="border-b border-white/10 pb-12 md:pb-20">
+                <div class="flex flex-col md:flex-row justify-between">
+                    <div class="mb-10 md:mb-0">
+                         <p class="font-sans text-xs uppercase tracking-widest text-clay mb-8">Newsletter</p>
+                         <div class="flex border-b border-white/20 pb-4 max-w-md">
+                             <input type="email" placeholder="Your email address" class="bg-transparent w-full outline-none text-lg md:text-xl font-serif italic placeholder-white/30 text-sand">
+                             <button class="uppercase text-xs tracking-widest hover:text-gold transition-colors whitespace-nowrap">Join</button>
+                         </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-10 md:gap-20">
+                        <ul class="space-y-4 font-sans text-sm font-light text-clay">
+                            <li><a href="#" class="hover:text-white transition-colors">Shop All</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Subscription</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">Wholesale</a></li>
+                        </ul>
+                         <ul class="space-y-4 font-sans text-sm font-light text-clay">
+                            <li><a href="#" class="hover:text-white transition-colors">Instagram</a></li>
+                            <li><a href="#" class="hover:text-white transition-colors">TikTok</a></li>
+                            <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 md:mt-20">
+                <h2 class="text-[25vw] leading-[0.7] font-serif text-center opacity-10 select-none pointer-events-none">bood.</h2>
+                <div class="flex flex-col md:flex-row justify-between items-center md:items-start gap-2 md:gap-0 mt-10 text-[10px] uppercase tracking-widest text-clay/50">
+                    <span>&copy; 2025 Bood UK</span>
+                    <span>London &bull; St. Lucia</span>
+                </div>
+            </div>
+        </footer>
+
+    </main>
+
+    <script>
+        // --- 1. SETUP LENIS (SMOOTH SCROLL) ---
+        const isMobileDevice = window.innerWidth < 768;
+        const lenis = new Lenis({
+            duration: isMobileDevice ? 1.0 : 1.5,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            ScrollTrigger.update();
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // --- 2. GSAP SETUP ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- 3. LOADER ANIMATION ---
+        const tl = gsap.timeline();
+
+        tl.to(".loader-text", {
+            y: 0,
+            duration: 1.2,
+            ease: "power4.out",
+            delay: 0.2
+        })
+        .to(".curtain", {
+            scaleY: 0,
+            duration: 1.2,
+            ease: "power4.inOut",
+            delay: 0.5,
+            onComplete: initSiteAnimations
+        })
+        .set(".curtain", { display: "none" });
+
+        // --- 4. SITE ANIMATIONS ---
+        function initSiteAnimations() {
+
+            // Hero Elements Reveal
+            const heroTl = gsap.timeline();
+            heroTl.to(".hero-title", { opacity: 1, y: 0, duration: 1.5, ease: "power3.out" })
+                  .to(".hero-sub", { opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power2.out" }, "-=1");
+
+            // Hero Parallax (Desktop Only for performance)
+            if (window.innerWidth >= 768) {
+                gsap.to(".hero-bg", {
+                    yPercent: 30,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: "body",
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            }
+
+            // Reveal Text on Scroll
+            gsap.utils.toArray(".reveal-type").forEach(text => {
+                gsap.from(text, {
+                    y: 50,
+                    opacity: 0,
+                    duration: 1.2,
+                    ease: "power3.out",
+                    scrollTrigger: {
+                        trigger: text,
+                        start: "top 85%"
+                    }
+                });
+            });
+
+            gsap.utils.toArray(".reveal-fade").forEach(text => {
+                gsap.from(text, {
+                    opacity: 0,
+                    duration: 2,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: text,
+                        start: "top 80%"
+                    }
+                });
+            });
+
+            // Image Mask Reveals
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            document.querySelectorAll('.reveal-mask').forEach(mask => {
+                observer.observe(mask);
+            });
+
+            // Image Parallax (Desktop Only for performance)
+            if (window.innerWidth >= 768) {
+                gsap.utils.toArray(".parallax-img").forEach(container => {
+                    const speed = container.dataset.speed || 0.1;
+                    const img = container.querySelector("img");
+                    if(img) {
+                        gsap.to(img, {
+                            y: "15%",
+                            ease: "none",
+                            scrollTrigger: {
+                                trigger: container,
+                                start: "top bottom",
+                                end: "bottom top",
+                                scrub: true
+                            }
+                        });
+                    }
+                });
+            }
+
+            // Horizontal Scroll Collection (Desktop Only)
+            const scrollContainer = document.querySelector("#scroll-container");
+            const collectionSection = document.querySelector("#collection");
+
+            // Only enable pinned horizontal scroll on desktop
+            if (window.innerWidth >= 768) {
+                gsap.to(scrollContainer, {
+                    x: () => -(scrollContainer.scrollWidth - window.innerWidth),
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: collectionSection,
+                        pin: true,
+                        scrub: 1,
+                        end: () => "+=" + scrollContainer.scrollWidth
+                    }
+                });
+            }
+
+            // Background Color Transitions
+            const sections = document.querySelectorAll('[data-bgcolor]');
+            sections.forEach(section => {
+                ScrollTrigger.create({
+                    trigger: section,
+                    start: "top 50%",
+                    end: "bottom 50%",
+                    onEnter: () => gsap.to("body", { backgroundColor: section.dataset.bgcolor, color: section.classList.contains('bg-moss') ? '#e8e6e1' : '#1a2e2a', duration: 1 }),
+                    onEnterBack: () => gsap.to("body", { backgroundColor: section.dataset.bgcolor, color: section.classList.contains('bg-moss') ? '#e8e6e1' : '#1a2e2a', duration: 1 })
+                });
+            });
+
+            // Video Hover/Touch Play
+            const videos = document.querySelectorAll('video');
+            const isMobile = window.innerWidth < 768;
+
+            videos.forEach(vid => {
+                if (isMobile) {
+                    // On mobile, play on tap
+                    vid.parentElement.addEventListener('click', () => {
+                        if (vid.paused) {
+                            vid.play();
+                        } else {
+                            vid.pause();
+                        }
+                    });
+                } else {
+                    // On desktop, play on hover
+                    vid.parentElement.addEventListener('mouseenter', () => vid.play());
+                    vid.parentElement.addEventListener('mouseleave', () => vid.pause());
+                }
+            });
+        }
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('translate-x-full');
+            // Animate hamburger to X
+            const spans = mobileMenuBtn.querySelectorAll('span');
+            if (!mobileMenu.classList.contains('translate-x-full')) {
+                spans[0].style.transform = 'rotate(45deg) translateY(8px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translateY(-8px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        });
+
+        // Close menu when clicking a link
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('translate-x-full');
+                const spans = mobileMenuBtn.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            });
+        });
+
+    </script>
+</body>
+</html>

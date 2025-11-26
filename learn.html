@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bood | The Compendium</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'moss': '#1a2e2a',
+                        'sand': '#e8e6e1',
+                        'clay': '#bfafa6',
+                        'gold': '#d4af37',
+                        'ocean': '#2b4c4a'
+                    },
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Manrope', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base & Reset */
+        body {
+            background-color: #e8e6e1;
+            color: #1a2e2a;
+            overflow-x: hidden;
+        }
+
+        /* Smooth Scroll Setup */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-stopped { overflow: hidden; }
+
+        /* Typography */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 4rem;
+            line-height: 0.8;
+            padding-right: 0.5rem;
+            padding-top: 0.2rem;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: #d4af37;
+        }
+
+        @media (max-width: 768px) {
+            .drop-cap::first-letter {
+                font-size: 3rem;
+            }
+        }
+
+        /* Active Navigation State */
+        .chapter-link.active {
+            color: #1a2e2a;
+            font-weight: 500;
+            padding-left: 1rem;
+            border-left: 1px solid #1a2e2a;
+        }
+
+        /* Images */
+        .chapter-img {
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full p-4 md:p-8 flex justify-between items-center z-50 text-moss mix-blend-darken bg-sand/90 backdrop-blur-md border-b border-moss/5">
+        <a href="index.html" class="text-xl md:text-2xl font-serif font-bold italic">bood.</a>
+
+        <div class="hidden md:flex space-x-12 font-sans text-xs uppercase tracking-[0.2em]">
+            <a href="index.html" class="hover:text-gold transition-colors">Our Roots</a>
+            <a href="collection.html" class="hover:text-gold transition-colors">Collection</a>
+            <a href="guide.html" class="hover:text-gold transition-colors">Guide</a>
+            <a href="#" class="text-gold border-b border-gold">Learn</a>
+            <a href="lions-mane.html" class="hover:text-gold transition-colors">Lion's Mane</a>
+            <a href="contact.html" class="hover:text-gold transition-colors">Contact</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button class="hidden md:block font-sans text-[10px] md:text-xs uppercase tracking-widest border border-moss/30 px-4 md:px-6 py-2 rounded-full hover:bg-moss hover:text-sand transition-all">
+                Shop (0)
+            </button>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-1.5 w-8 h-8 justify-center items-center">
+                <span class="w-6 h-[2px] bg-moss transition-all duration-300"></span>
+                <span class="w-6 h-[2px] bg-moss transition-all duration-300"></span>
+                <span class="w-6 h-[2px] bg-moss transition-all duration-300"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-moss z-40 transform translate-x-full transition-transform duration-300 md:hidden">
+        <div class="flex flex-col items-center justify-center h-full space-y-8">
+            <a href="index.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Our Roots</a>
+            <a href="collection.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Collection</a>
+            <a href="guide.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Guide</a>
+            <a href="#" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-gold">Learn</a>
+            <a href="lions-mane.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Lion's Mane</a>
+            <a href="contact.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Contact</a>
+            <button class="font-sans text-xs uppercase tracking-widest border border-sand/30 px-6 py-3 rounded-full hover:bg-sand hover:text-moss text-sand transition-all mt-8">
+                Shop (0)
+            </button>
+        </div>
+    </div>
+
+    <main>
+
+        <!-- HERO SECTION -->
+        <section class="relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center border-b border-moss/10 pt-24 md:pt-32" data-bgcolor="#e8e6e1">
+            <div class="text-center max-w-4xl px-4">
+                <span class="font-sans text-xs uppercase tracking-[0.3em] md:tracking-[0.4em] text-clay mb-4 md:mb-6 block">The Knowledge Base</span>
+                <h1 class="text-5xl md:text-9xl font-serif italic text-moss mb-6 md:mb-8">The Compendium.</h1>
+                <p class="font-sans text-base md:text-lg text-moss/70 max-w-xl mx-auto leading-relaxed">
+                    A comprehensive guide to Chondrus Crispus and Genus Gracilaria. Uncovering the history, science, and ritual of the ocean's most potent botanical.
+                </p>
+            </div>
+        </section>
+
+
+        <!-- CONTENT WRAPPER -->
+        <div class="flex flex-col md:flex-row relative">
+
+            <!-- STICKY SIDEBAR NAVIGATION (Desktop Only) -->
+            <aside class="hidden md:block w-1/4 h-screen sticky top-0 pt-40 pl-12 border-r border-moss/10">
+                <span class="font-sans text-[10px] uppercase tracking-widest text-clay mb-8 block">Table of Contents</span>
+                <ul class="space-y-4 font-sans text-xs uppercase tracking-widest text-moss/40">
+                    <li><a href="#section-1" class="chapter-link transition-all duration-300 block hover:text-moss">01. Definition</a></li>
+                    <li><a href="#section-2" class="chapter-link transition-all duration-300 block hover:text-moss">02. History</a></li>
+                    <li><a href="#section-3" class="chapter-link transition-all duration-300 block hover:text-moss">03. 92 Minerals</a></li>
+                    <li><a href="#section-4" class="chapter-link transition-all duration-300 block hover:text-moss">04. Wildcrafted</a></li>
+                    <li><a href="#section-5" class="chapter-link transition-all duration-300 block hover:text-moss">05. Thyroid</a></li>
+                    <li><a href="#section-6" class="chapter-link transition-all duration-300 block hover:text-moss">06. Gut Health</a></li>
+                    <li><a href="#section-7" class="chapter-link transition-all duration-300 block hover:text-moss">07. Skin & Beauty</a></li>
+                    <li><a href="#section-8" class="chapter-link transition-all duration-300 block hover:text-moss">08. Varieties</a></li>
+                    <li><a href="#section-9" class="chapter-link transition-all duration-300 block hover:text-moss">09. Preparation</a></li>
+                    <li><a href="#section-10" class="chapter-link transition-all duration-300 block hover:text-moss">10. Safety</a></li>
+                </ul>
+            </aside>
+
+            <!-- MAIN CONTENT AREA -->
+            <div class="w-full md:w-3/4">
+
+                <!-- Section 1: Definition (Light) -->
+                <section id="section-1" class="py-16 md:py-32 px-6 md:px-20 border-b border-moss/5 relative" data-bgcolor="#e8e6e1">
+                    <span class="font-serif text-5xl md:text-6xl text-clay/20 italic absolute top-8 md:-mt-10">01</span>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-8 md:mb-10 relative z-10">What is Sea Moss?</h2>
+                    <div class="max-w-2xl text-moss/80 font-serif leading-loose text-base md:text-lg drop-cap">
+                        Sea moss is a generic term used to describe a variety of red algae species. The two most common commercially available types are <em>Chondrus Crispus</em> (often called Irish Moss) and <em>Genus Gracilaria</em> (often called Sea Moss). It is a spiny sea vegetable that grows on rocky coastlines in the Atlantic Ocean, particularly in the Caribbean and Ireland.
+                    </div>
+                    <div class="mt-8 md:mt-12 w-full h-[250px] md:h-[400px] overflow-hidden relative">
+                         <img src="https://images.pexels.com/photos/9303534/pexels-photo-9303534.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" class="chapter-img w-full h-full object-cover" alt="Red Algae">
+                    </div>
+                </section>
+
+                <!-- Section 2: History (Dark Green) -->
+                <section id="section-2" class="py-16 md:py-32 px-6 md:px-20 border-b border-moss/5 bg-moss text-sand relative" data-bgcolor="#1a2e2a">
+                    <span class="font-serif text-5xl md:text-6xl text-white/10 italic absolute top-8 md:-mt-10">02</span>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-8 md:mb-10 relative z-10 text-white">A History of Survival</h2>
+                    <p class="max-w-2xl text-sand/80 font-sans leading-relaxed mb-6 text-sm md:text-base">
+                        During the Irish Potato Famine in the 1840s, sea moss became a crucial source of nutrition for the starving population. Known as "poverty food," it was boiled into soups to provide sustenance when crops failed.
+                    </p>
+                    <p class="max-w-2xl text-sand/80 font-sans leading-relaxed text-sm md:text-base">
+                        Simultaneously, in the Caribbean, it has been used for centuries as a traditional remedy for libido, energy, and recovery, often brewed into a spiced drink with nutmeg and condensed milk.
+                    </p>
+                </section>
+
+                <!-- Section 3: 92 Minerals (Light) -->
+                <section id="section-3" class="py-16 md:py-32 px-6 md:px-20 border-b border-moss/5 relative" data-bgcolor="#e8e6e1">
+                    <span class="font-serif text-5xl md:text-6xl text-clay/20 italic absolute top-8 md:-mt-10">03</span>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-8 md:mb-10 relative z-10">The 92 Minerals</h2>
+                    <p class="max-w-2xl text-moss/80 font-sans leading-relaxed mb-8 md:mb-12 text-sm md:text-base">
+                        The human body is composed of 102 minerals. Sea moss is said to contain 92 of them. It is nature's most complete multivitamin.
+                    </p>
+
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                        <div class="p-4 md:p-6 border border-moss/10 hover:bg-moss/5 transition-colors group">
+                            <h4 class="text-gold font-serif italic text-lg md:text-xl mb-2">Iodine</h4>
+                            <p class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Thyroid Support</p>
+                        </div>
+                         <div class="p-4 md:p-6 border border-moss/10 hover:bg-moss/5 transition-colors group">
+                            <h4 class="text-gold font-serif italic text-lg md:text-xl mb-2">Magnesium</h4>
+                            <p class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Muscle Function</p>
+                        </div>
+                         <div class="p-4 md:p-6 border border-moss/10 hover:bg-moss/5 transition-colors group">
+                            <h4 class="text-gold font-serif italic text-lg md:text-xl mb-2">Calcium</h4>
+                            <p class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Bone Health</p>
+                        </div>
+                         <div class="p-4 md:p-6 border border-moss/10 hover:bg-moss/5 transition-colors group">
+                            <h4 class="text-gold font-serif italic text-lg md:text-xl mb-2">Potassium</h4>
+                            <p class="text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">Mental Health</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 4: Wildcrafted (Dark Green) -->
+                <section id="section-4" class="py-16 md:py-32 px-6 md:px-20 border-b border-moss/5 bg-moss text-sand relative" data-bgcolor="#1a2e2a">
+                    <span class="font-serif text-5xl md:text-6xl text-white/10 italic absolute top-8 md:-mt-10">04</span>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-8 md:mb-10 relative z-10 text-white">Wildcrafted vs. Pool Grown</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                        <div>
+                            <h3 class="font-sans text-xs uppercase tracking-widest text-gold mb-4">Wildcrafted (Real)</h3>
+                            <p class="text-sand/80 font-serif leading-relaxed text-sm md:text-base">
+                                Grows naturally on rocks in the ocean. It absorbs minerals from the rock and the moving current. It is sun-dried, creating a natural color variation and thin, wiry texture.
+                            </p>
+                        </div>
+                        <div>
+                            <h3 class="font-sans text-xs uppercase tracking-widest text-clay mb-4">Pool Grown (Fake)</h3>
+                            <p class="text-sand/80 font-serif leading-relaxed text-sm md:text-base">
+                                Grown in tanks with added salt. It never touches a rock, so it lacks mineral density. It is often thick, rubbery, and smells of chemical chlorine or pure salt.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 5: Thyroid (Light) -->
+                <section id="section-5" class="py-16 md:py-32 px-6 md:px-20 border-b border-moss/5 relative" data-bgcolor="#e0ded9">
+                    <span class="font-serif text-5xl md:text-6xl text-clay/20 italic absolute top-8 md:-mt-10">05</span>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-8 md:mb-10 relative z-10">Thyroid Function</h2>
+                    <p class="max-w-2xl text-moss/80 font-sans leading-relaxed text-sm md:text-base">
+                        The thyroid gland requires iodine to produce hormones that regulate metabolism, energy, and mood. Sea moss is one of the most potent natural sources of iodine. For those with hypothyroidism (underactive thyroid), it can be a game-changer for energy levels.
+                    </p>
+                </section>
+
+                <!-- Section 6: Gut Health (Dark Green) -->
+                <section id="section-6" class="py-16 md:py-32 px-6 md:px-20 border-b border-moss/5 bg-moss text-sand relative" data-bgcolor="#1a2e2a">
+                    <span class="font-serif text-5xl md:text-6xl text-white/10 italic absolute top-8 md:-mt-10">06</span>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-8 md:mb-10 relative z-10 text-white">Gut Health & Digestion</h2>
+                    <div class="flex flex-col md:flex-row gap-6 md:gap-10 items-center">
+                        <div class="md:w-1/2">
+                            <p class="text-sand/80 font-sans leading-relaxed text-sm md:text-base">
+                                Sea moss is a mucilaginous food. When consumed, it coats the lining of the stomach and intestines. It acts as a powerful prebiotic, feeding the good bacteria in your gut. This can aid in digestion, reduce acid reflux, and promote regularity.
+                            </p>
+                        </div>
+                        <div class="md:w-1/2 h-48 md:h-64 overflow-hidden rounded-lg w-full">
+                             <img src="https://images.pexels.com/photos/6621435/pexels-photo-6621435.jpeg?auto=compress&cs=tinysrgb&w=800" class="chapter-img w-full h-full object-cover" alt="Gel Texture">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 7: Skin (Light) -->
+                <section id="section-7" class="py-16 md:py-32 px-6 md:px-20 border-b border-moss/5 relative" data-bgcolor="#e8e6e1">
+                    <span class="font-serif text-5xl md:text-6xl text-clay/20 italic absolute top-8 md:-mt-10">07</span>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-8 md:mb-10 relative z-10">Skin & Collagen</h2>
+                    <p class="max-w-2xl text-moss/80 font-sans leading-relaxed mb-6 text-sm md:text-base">
+                        Often called "vegan collagen," sea moss helps the body produce collagen, which maintains skin elasticity and prevents wrinkles.
+                    </p>
+                    <ul class="list-disc list-inside space-y-2 font-serif text-moss/70 text-sm md:text-base">
+                        <li>High in sulfur (good for acne)</li>
+                        <li>Hydrating (humectant properties)</li>
+                        <li>Soothes eczema and psoriasis</li>
+                    </ul>
+                </section>
+
+                <!-- Section 8: Varieties (Dark Green) -->
+                <section id="section-8" class="py-16 md:py-32 px-6 md:px-20 border-b border-moss/5 bg-moss text-sand relative" data-bgcolor="#1a2e2a">
+                    <span class="font-serif text-5xl md:text-6xl text-white/10 italic absolute top-8 md:-mt-10">08</span>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-8 md:mb-10 relative z-10 text-white">The Varieties</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+                        <div class="bg-sand p-6 md:p-8 text-moss">
+                            <h3 class="text-gold font-serif italic text-xl md:text-2xl mb-2">Gold</h3>
+                            <p class="text-xs text-moss/60 leading-relaxed">Sun-dried the longest. Mildest taste. Best for beginners and everyday use.</p>
+                        </div>
+                        <div class="bg-sand p-6 md:p-8 text-moss">
+                            <h3 class="text-[#800080] font-serif italic text-xl md:text-2xl mb-2">Purple</h3>
+                            <p class="text-xs text-moss/60 leading-relaxed">Dried in the shade. Higher in antioxidants (anthocyanins). Stronger ocean taste.</p>
+                        </div>
+                         <div class="bg-sand p-6 md:p-8 text-moss">
+                            <h3 class="text-[#2e8b57] font-serif italic text-xl md:text-2xl mb-2">Green</h3>
+                            <p class="text-xs text-moss/60 leading-relaxed">High in chlorophyll. Excellent for blood detoxification. Earthy taste.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 9: Preparation (Light) -->
+                <section id="section-9" class="py-16 md:py-32 px-6 md:px-20 border-b border-moss/5 relative" data-bgcolor="#e0ded9">
+                    <span class="font-serif text-5xl md:text-6xl text-clay/20 italic absolute top-8 md:-mt-10">09</span>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-8 md:mb-10 relative z-10">Preparation</h2>
+                    <p class="max-w-2xl text-moss/80 font-sans leading-relaxed mb-6 md:mb-8 text-sm md:text-base">
+                        Turning raw dried moss into a gel is a simple 3-step process:
+                    </p>
+                    <div class="space-y-4 md:space-y-6">
+                        <div class="flex gap-4 md:gap-6">
+                            <span class="font-serif italic text-gold text-xl md:text-2xl">01</span>
+                            <div>
+                                <h4 class="uppercase tracking-widest text-xs font-bold mb-1">Wash</h4>
+                                <p class="text-sm text-moss/70">Rinse thoroughly with spring water to remove sand and sea salt.</p>
+                            </div>
+                        </div>
+                         <div class="flex gap-4 md:gap-6">
+                            <span class="font-serif italic text-gold text-xl md:text-2xl">02</span>
+                            <div>
+                                <h4 class="uppercase tracking-widest text-xs font-bold mb-1">Soak</h4>
+                                <p class="text-sm text-moss/70">Soak in spring water with lime juice for 12-24 hours. It will expand 3x its size.</p>
+                            </div>
+                        </div>
+                         <div class="flex gap-4 md:gap-6">
+                            <span class="font-serif italic text-gold text-xl md:text-2xl">03</span>
+                            <div>
+                                <h4 class="uppercase tracking-widest text-xs font-bold mb-1">Blend</h4>
+                                <p class="text-sm text-moss/70">Blend with fresh spring water until smooth and creamy. Refrigerate immediately.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section 10: Safety (Dark Green) -->
+                <section id="section-10" class="py-16 md:py-32 px-6 md:px-20 bg-moss text-sand relative" data-bgcolor="#1a2e2a">
+                    <span class="font-serif text-5xl md:text-6xl text-white/10 italic absolute top-8 md:-mt-10">10</span>
+                    <h2 class="text-3xl md:text-4xl font-serif mb-8 md:mb-10 relative z-10 text-white">Dosage & Safety</h2>
+                    <p class="max-w-2xl text-sand/80 font-sans leading-relaxed text-sm md:text-base">
+                        <strong>Recommended Dosage:</strong> 1-2 tablespoons of gel per day.
+                    </p>
+                    <p class="max-w-2xl text-sand/80 font-sans leading-relaxed mt-4 text-sm md:text-base">
+                        <strong>Precaution:</strong> Because sea moss is high in iodine, those with hyperthyroidism (overactive thyroid) or sensitivity to iodine should consult a doctor before consuming. Consistency is key, but moderation is essential.
+                    </p>
+
+                    <div class="mt-12 md:mt-20 pt-8 md:pt-10 border-t border-white/10">
+                        <a href="collection.html" class="inline-block bg-sand text-moss px-8 md:px-12 py-3 md:py-4 rounded-full font-serif italic text-lg md:text-xl hover:bg-gold hover:text-white transition-colors">Start Your Journey</a>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Setup Lenis Smooth Scroll
+        const isMobileDevice = window.innerWidth < 768;
+        const lenis = new Lenis({
+            duration: isMobileDevice ? 1.0 : 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            ScrollTrigger.update();
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // GSAP Registration
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Active Link Highlighting
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.chapter-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 300)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                link.classList.remove('text-sand');
+                link.classList.add('text-moss/40');
+
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                    link.classList.remove('text-moss/40');
+                }
+            });
+        });
+
+        // Background Color Shift
+        const colorSections = document.querySelectorAll('[data-bgcolor]');
+        colorSections.forEach(section => {
+            ScrollTrigger.create({
+                trigger: section,
+                start: "top 50%",
+                end: "bottom 50%",
+                onEnter: () => gsap.to("body", { backgroundColor: section.dataset.bgcolor, duration: 1 }),
+                onEnterBack: () => gsap.to("body", { backgroundColor: section.dataset.bgcolor, duration: 1 })
+            });
+        });
+
+        // Parallax Images (Desktop Only)
+        if (window.innerWidth >= 768) {
+            gsap.utils.toArray(".chapter-img").forEach(img => {
+                gsap.to(img, {
+                    y: "20%",
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: img.parentElement,
+                        start: "top bottom",
+                        end: "bottom top",
+                        scrub: true
+                    }
+                });
+            });
+        }
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('translate-x-full');
+            // Animate hamburger to X
+            const spans = mobileMenuBtn.querySelectorAll('span');
+            if (!mobileMenu.classList.contains('translate-x-full')) {
+                spans[0].style.transform = 'rotate(45deg) translateY(8px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translateY(-8px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        });
+
+        // Close menu when clicking a link
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('translate-x-full');
+                const spans = mobileMenuBtn.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

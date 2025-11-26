@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en" class="antialiased">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bood | The Collection</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Manrope:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- GSAP & Lenis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <!-- Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'moss': '#1a2e2a',
+                        'sand': '#e8e6e1',
+                        'clay': '#bfafa6',
+                        'gold': '#d4af37',
+                        'ocean': '#2b4c4a'
+                    },
+                    fontFamily: {
+                        'serif': ['Playfair Display', 'serif'],
+                        'sans': ['Manrope', 'sans-serif'],
+                    },
+                    backgroundImage: {
+                        'noise': "url('https://grainy-gradients.vercel.app/noise.svg')",
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Base & Reset */
+        body {
+            background-color: #e8e6e1;
+            color: #1a2e2a;
+            overflow-x: hidden;
+        }
+
+        /* Smooth Scroll Setup */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
+
+        /* Custom Reveal Animation for Products */
+        .product-card {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* Loader */
+        .loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #e8e6e1;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Simple Loader -->
+    <div class="loader-overlay">
+        <span class="font-serif italic text-xl md:text-2xl animate-pulse">Loading Collection...</span>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full p-4 md:p-8 flex justify-between items-center z-50 text-moss mix-blend-darken bg-sand/80 backdrop-blur-sm border-b border-moss/5">
+        <a href="index.html" class="text-xl md:text-2xl font-serif font-bold italic">bood.</a>
+
+        <div class="hidden md:flex space-x-12 font-sans text-xs uppercase tracking-[0.2em]">
+            <a href="index.html" class="hover:text-gold transition-colors">Our Roots</a>
+            <a href="#" class="text-gold border-b border-gold">Collection</a>
+            <a href="guide.html" class="hover:text-gold transition-colors">Guide</a>
+            <a href="learn.html" class="hover:text-gold transition-colors">Learn</a>
+            <a href="lions-mane.html" class="hover:text-gold transition-colors">Lion's Mane</a>
+            <a href="contact.html" class="hover:text-gold transition-colors">Contact</a>
+        </div>
+
+        <div class="flex items-center gap-4">
+            <button class="hidden md:block font-sans text-[10px] md:text-xs uppercase tracking-widest border border-moss/30 px-4 md:px-6 py-2 rounded-full hover:bg-moss hover:text-sand transition-all">
+                Shop (0)
+            </button>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-btn" class="md:hidden flex flex-col gap-1.5 w-8 h-8 justify-center items-center">
+                <span class="w-6 h-[2px] bg-moss transition-all duration-300"></span>
+                <span class="w-6 h-[2px] bg-moss transition-all duration-300"></span>
+                <span class="w-6 h-[2px] bg-moss transition-all duration-300"></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 bg-moss z-40 transform translate-x-full transition-transform duration-300 md:hidden">
+        <div class="flex flex-col items-center justify-center h-full space-y-8">
+            <a href="index.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Our Roots</a>
+            <a href="#" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-gold">Collection</a>
+            <a href="guide.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Guide</a>
+            <a href="learn.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Learn</a>
+            <a href="lions-mane.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Lion's Mane</a>
+            <a href="contact.html" class="mobile-menu-link text-2xl font-sans uppercase tracking-widest text-sand hover:text-gold transition-colors">Contact</a>
+            <button class="font-sans text-xs uppercase tracking-widest border border-sand/30 px-6 py-3 rounded-full hover:bg-sand hover:text-moss text-sand transition-all mt-8">
+                Shop (0)
+            </button>
+        </div>
+    </div>
+
+    <main class="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-12">
+
+        <!-- Header -->
+        <div class="text-center py-12 md:py-20 border-b border-moss/10 mb-8 md:mb-12">
+            <p class="font-sans text-xs uppercase tracking-[0.3em] text-clay mb-4">Small Batch &bull; Wildcrafted</p>
+            <h1 class="text-5xl md:text-8xl font-serif text-moss">The Collection</h1>
+        </div>
+
+        <!-- Layout: Sidebar + Grid -->
+        <div class="flex flex-col md:flex-row gap-8 md:gap-12">
+
+            <!-- Sidebar Filters (Mobile: Collapsible, Desktop: Sticky) -->
+            <aside class="md:w-1/4 relative">
+                <div class="md:sticky md:top-40 space-y-8 md:space-y-12">
+
+                    <!-- Categories -->
+                    <div>
+                        <h3 class="font-serif text-lg md:text-xl italic mb-4 md:mb-6">Category</h3>
+                        <ul class="space-y-2 md:space-y-3 font-sans text-sm text-moss/70">
+                            <li><a href="#" class="text-moss font-medium border-b border-moss">View All</a></li>
+                            <li><a href="#" class="hover:text-gold transition-colors">Sea Moss Gels</a></li>
+                            <li><a href="#" class="hover:text-gold transition-colors">Raw Dried Moss</a></li>
+                            <li><a href="#" class="hover:text-gold transition-colors">Capsules</a></li>
+                            <li><a href="#" class="hover:text-gold transition-colors">Bundles</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Sort -->
+                    <div>
+                        <h3 class="font-serif text-lg md:text-xl italic mb-4 md:mb-6">Sort By</h3>
+                        <ul class="space-y-2 md:space-y-3 font-sans text-sm text-moss/70">
+                            <li><a href="#" class="hover:text-gold transition-colors">Best Sellers</a></li>
+                            <li><a href="#" class="hover:text-gold transition-colors">Price: Low to High</a></li>
+                            <li><a href="#" class="hover:text-gold transition-colors">Price: High to Low</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="pt-8 md:pt-12 border-t border-moss/10">
+                        <p class="font-sans text-xs text-clay leading-relaxed">
+                            All our products are harvested sustainably from the protected waters of St. Lucia.
+                        </p>
+                    </div>
+
+                </div>
+            </aside>
+
+            <!-- Product Grid -->
+            <div class="md:w-3/4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-6 gap-y-12 md:gap-y-16">
+
+                    <!-- Product 1 -->
+                    <div class="product-card group cursor-pointer">
+                        <div class="relative overflow-hidden bg-white aspect-[4/5] mb-4">
+                            <img src="https://images.pexels.com/photos/8844383/pexels-photo-8844383.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" alt="Gold Gel">
+                            <div class="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-500"></div>
+                            <!-- Quick Add -->
+                            <button class="absolute bottom-0 left-0 w-full bg-moss text-sand py-3 md:py-4 font-sans text-[10px] md:text-xs uppercase tracking-widest translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                Add to Cart — £15.00
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg md:text-xl font-serif italic group-hover:text-gold transition-colors">St. Lucian Gold</h3>
+                                <p class="text-xs text-clay mt-1 font-sans">The Original Gel</p>
+                            </div>
+                            <span class="font-sans text-sm whitespace-nowrap ml-2">£15.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Product 2 -->
+                    <div class="product-card group cursor-pointer">
+                        <div class="relative overflow-hidden bg-white aspect-[4/5] mb-4">
+                            <img src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" alt="Purple Gel">
+                            <button class="absolute bottom-0 left-0 w-full bg-moss text-sand py-3 md:py-4 font-sans text-[10px] md:text-xs uppercase tracking-widest translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                Add to Cart — £18.00
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg md:text-xl font-serif italic group-hover:text-gold transition-colors">Royal Purple</h3>
+                                <p class="text-xs text-clay mt-1 font-sans">Full Spectrum</p>
+                            </div>
+                            <span class="font-sans text-sm whitespace-nowrap ml-2">£18.00</span>
+                        </div>
+                    </div>
+
+                    <!-- Product 3 -->
+                    <div class="product-card group cursor-pointer">
+                        <div class="relative overflow-hidden bg-white aspect-[4/5] mb-4">
+                            <img src="https://images.pexels.com/photos/6621435/pexels-photo-6621435.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" alt="Turmeric">
+                            <div class="absolute top-4 right-4 bg-gold text-white text-[10px] uppercase font-bold px-2 py-1">Best Seller</div>
+                            <button class="absolute bottom-0 left-0 w-full bg-moss text-sand py-3 md:py-4 font-sans text-[10px] md:text-xs uppercase tracking-widest translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                Add to Cart — £16.50
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg md:text-xl font-serif italic group-hover:text-gold transition-colors">Turmeric & Ginger</h3>
+                                <p class="text-xs text-clay mt-1 font-sans">Anti-Inflammatory</p>
+                            </div>
+                            <span class="font-sans text-sm whitespace-nowrap ml-2">£16.50</span>
+                        </div>
+                    </div>
+
+                    <!-- Product 4 -->
+                    <div class="product-card group cursor-pointer">
+                        <div class="relative overflow-hidden bg-white aspect-[4/5] mb-4">
+                            <img src="https://images.pexels.com/photos/4099354/pexels-photo-4099354.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" alt="Raw Moss">
+                            <button class="absolute bottom-0 left-0 w-full bg-moss text-sand py-3 md:py-4 font-sans text-[10px] md:text-xs uppercase tracking-widest translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                Add to Cart — £25.00
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg md:text-xl font-serif italic group-hover:text-gold transition-colors">Raw Gold Moss</h3>
+                                <p class="text-xs text-clay mt-1 font-sans">500g Bag</p>
+                            </div>
+                            <span class="font-sans text-sm whitespace-nowrap ml-2">£25.00</span>
+                        </div>
+                    </div>
+
+                     <!-- Product 5 -->
+                     <div class="product-card group cursor-pointer">
+                        <div class="relative overflow-hidden bg-white aspect-[4/5] mb-4">
+                            <img src="https://images.pexels.com/photos/8064273/pexels-photo-8064273.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" alt="Capsules">
+                            <button class="absolute bottom-0 left-0 w-full bg-moss text-sand py-3 md:py-4 font-sans text-[10px] md:text-xs uppercase tracking-widest translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                Add to Cart — £22.00
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg md:text-xl font-serif italic group-hover:text-gold transition-colors">Moss Capsules</h3>
+                                <p class="text-xs text-clay mt-1 font-sans">60 Count</p>
+                            </div>
+                            <span class="font-sans text-sm whitespace-nowrap ml-2">£22.00</span>
+                        </div>
+                    </div>
+
+                     <!-- Product 6 -->
+                     <div class="product-card group cursor-pointer">
+                        <div class="relative overflow-hidden bg-white aspect-[4/5] mb-4">
+                            <img src="https://images.pexels.com/photos/361184/asparagus-wellness-food-healthy-361184.jpeg?auto=compress&cs=tinysrgb&w=800" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" alt="Starter Kit">
+                            <button class="absolute bottom-0 left-0 w-full bg-moss text-sand py-3 md:py-4 font-sans text-[10px] md:text-xs uppercase tracking-widest translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                                Add to Cart — £40.00
+                            </button>
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-lg md:text-xl font-serif italic group-hover:text-gold transition-colors">The Starter Kit</h3>
+                                <p class="text-xs text-clay mt-1 font-sans">Gel + Spoon + Guide</p>
+                            </div>
+                            <span class="font-sans text-sm whitespace-nowrap ml-2">£40.00</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Pagination -->
+                <div class="flex justify-center mt-12 md:mt-20 space-x-4 font-sans text-sm">
+                    <span class="border-b border-moss text-moss pb-1 cursor-pointer">1</span>
+                    <span class="text-clay hover:text-moss cursor-pointer">2</span>
+                    <span class="text-clay hover:text-moss cursor-pointer">Next &rarr;</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer (Simplified) -->
+    <footer class="bg-moss text-sand py-12 md:py-20 px-6 md:px-12 border-t border-sand/10">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <h2 class="text-3xl md:text-4xl font-serif italic">bood.</h2>
+            <div class="flex space-x-6 md:space-x-8 text-xs uppercase tracking-widest mt-6 md:mt-0 opacity-60">
+                <a href="#">Shipping</a>
+                <a href="#">Returns</a>
+                <a href="contact.html">Contact</a>
+            </div>
+        </div>
+        <p class="text-center text-[10px] uppercase tracking-widest opacity-30 mt-8 md:mt-12">&copy; 2025 Bood UK</p>
+    </footer>
+
+    <script>
+        // Setup Lenis Smooth Scroll
+        const isMobileDevice = window.innerWidth < 768;
+        const lenis = new Lenis({
+            duration: isMobileDevice ? 1.0 : 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            smooth: true
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            ScrollTrigger.update();
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Animation Registration
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Loader & Reveal
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+
+            tl.to('.loader-overlay', {
+                opacity: 0,
+                duration: 0.5,
+                pointerEvents: 'none'
+            })
+            .to('.product-card', {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                stagger: 0.1,
+                ease: "power3.out"
+            }, "-=0.2");
+        });
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuLinks = document.querySelectorAll('.mobile-menu-link');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('translate-x-full');
+            // Animate hamburger to X
+            const spans = mobileMenuBtn.querySelectorAll('span');
+            if (!mobileMenu.classList.contains('translate-x-full')) {
+                spans[0].style.transform = 'rotate(45deg) translateY(8px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translateY(-8px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        });
+
+        // Close menu when clicking a link
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('translate-x-full');
+                const spans = mobileMenuBtn.querySelectorAll('span');
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
