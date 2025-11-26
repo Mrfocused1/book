@@ -554,9 +554,9 @@
             // Animate hamburger to X
             const spans = mobileMenuBtn.querySelectorAll('span');
             if (!mobileMenu.classList.contains('translate-x-full')) {
-                spans[0].style.transform = 'rotate(45deg) translateY(8px)';
+                spans[0].style.transform = 'rotate(45deg) translate(0, 14px)';
                 spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translateY(-8px)';
+                spans[2].style.transform = 'rotate(-45deg) translate(0, -14px)';
             } else {
                 spans[0].style.transform = 'none';
                 spans[1].style.opacity = '1';
